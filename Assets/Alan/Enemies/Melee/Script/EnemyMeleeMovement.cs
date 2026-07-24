@@ -1,15 +1,23 @@
+using System;
 using UnityEngine;
 
-public class EnemyRangedMovement : MonoBehaviour
+public class EnemyMeleeMovement : MonoBehaviour
 {
-    public Rigidbody2D rangedRb;
+    public Rigidbody2D meleeRb;
     public Transform playerTransform;
+    public static float enemyToPlayerDistanceCheckReference;
+    public static float avoidingDistanceFromPlayerReference;
 
     public float enemyCurrentMoveSpeed;
-    public float avoidingDistanceFromPlayer = 5f;
-
-    [SerializeField] private float enemyToPlayerDistanceCheck;
+    public float avoidingDistanceFromPlayer;
     
+    [SerializeField] private float enemyToPlayerDistanceCheck;
+
+    private void Awake()
+    {
+        avoidingDistanceFromPlayerReference = avoidingDistanceFromPlayer;
+    }
+
     void Start()
     {
         if (!playerTransform)
@@ -17,9 +25,9 @@ public class EnemyRangedMovement : MonoBehaviour
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
-        if (!rangedRb)
+        if (!meleeRb)
         {
-            rangedRb = GetComponent<Rigidbody2D>();
+            meleeRb = GetComponent<Rigidbody2D>();
         }
     }
     
@@ -28,6 +36,7 @@ public class EnemyRangedMovement : MonoBehaviour
         Vector3 directionToPlayer = playerTransform.position - gameObject.transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
         enemyToPlayerDistanceCheck = distanceToPlayer;
+        enemyToPlayerDistanceCheckReference = distanceToPlayer;
         
         if (distanceToPlayer > avoidingDistanceFromPlayer)
         {
@@ -37,7 +46,7 @@ public class EnemyRangedMovement : MonoBehaviour
 
     private void MovingTowardsPlayer(Vector3 directionToPlayer)
     {
-        Vector2 newPosition = rangedRb.transform.position + (directionToPlayer * (enemyCurrentMoveSpeed * Time.fixedDeltaTime));
-        rangedRb.MovePosition(newPosition);
+        Vector2 newPosition = meleeRb.transform.position + (directionToPlayer * (enemyCurrentMoveSpeed * Time.fixedDeltaTime));
+        meleeRb.MovePosition(newPosition);
     }
 }

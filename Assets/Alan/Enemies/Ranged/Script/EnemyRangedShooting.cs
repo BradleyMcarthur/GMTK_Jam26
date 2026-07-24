@@ -1,34 +1,45 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class EnemyRangedShooting : MonoBehaviour
 {
     public GameObject bulletPrefab;
-    public GameObject shootingPoint;
-    
-    public float bulletSpeed;
-    public static int BulletDamage;
+    public Transform shootingPoint;
+    public static int BulletDamageReference;
+    public static float BulletDespawnTimeReference;
+
+    [Space(10)]
     public float shootingCooldown;
-    public bool isInCooldown = false;
+    public float currentShootingCooldown;
     
-    void FixedUpdate()
+    [Space(10)]
+    public float bulletSpeed;
+    public int bulletDamage;
+    public float bulletDespawnTime;
+    
+
+    private void Awake()
     {
-        if (!gameObject) return;
-        StartCoroutine(EnemyRangedLoopedShooting());
+        currentShootingCooldown = shootingCooldown;
+        BulletDamageReference = bulletDamage;
+        BulletDespawnTimeReference = bulletDespawnTime;
     }
 
-    private IEnumerator EnemyRangedLoopedShooting() // fix the weird shooting timing
+    void Update()
     {
-        if (isInCooldown) yield break;
-        yield return new WaitForSeconds(shootingCooldown);
-        
-        GameObject newBullet = Instantiate(bulletPrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
-        Rigidbody2D newBulletRb = newBullet.GetComponent<Rigidbody2D>();
-
-        if (newBulletRb)
+        if (currentShootingCooldown > 0)
         {
-            newBulletRb.linearVelocity = transform.up * bulletSpeed;
+            currentShootingCooldown -= Time.deltaTime;
+            return;
         }
-        isInCooldown = true;
+        currentShootingCooldown = shootingCooldown;
+        EnemyRangedLoopedShooting();
+    }
+
+    private void EnemyRangedLoopedShooting()
+    {
+        GameObject newBullet = Instantiate(bulletPrefab, shootingPoint.transform.position, shootingPoint.transform.rotation);
+        newBullet.GetComponent<Rigidbody2D>().linearVelocity = transform.up * bulletSpeed;
     }
 }

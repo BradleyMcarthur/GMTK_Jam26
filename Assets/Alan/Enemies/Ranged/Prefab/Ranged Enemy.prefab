@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7181451951609815693}
   - component: {fileID: 6796681710590200052}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,13 +102,13 @@ GameObject:
   - component: {fileID: 3735182849881480361}
   - component: {fileID: 6649571485570396618}
   - component: {fileID: 207445851231358534}
+  - component: {fileID: 8077993689658110254}
   - component: {fileID: 5834442051337719181}
   - component: {fileID: 1768476363741352736}
-  - component: {fileID: 601300419738159607}
   - component: {fileID: 1533977930543750932}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ranged Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,9 +142,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Mass: 100000
+  m_LinearDamping: 100
+  m_AngularDamping: 100
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -203,6 +203,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 0.913822}
   m_EdgeRadius: 0
+--- !u!114 &8077993689658110254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687203531365180638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3926f2c0c44f4b64d93a39a05c442cdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHp
+  enemyHealth: 0
+  maxHealth: 100
+  isDead: 0
 --- !u!114 &5834442051337719181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,7 +232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRangedMovement
   rangedRb: {fileID: 0}
   playerTransform: {fileID: 0}
-  enemyCurrentMoveSpeed: 2
+  enemyCurrentMoveSpeed: 0.25
   avoidingDistanceFromPlayer: 10
   enemyToPlayerDistanceCheck: 0
 --- !u!114 &1768476363741352736
@@ -233,22 +248,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRangedTargetting
   playerTransform: {fileID: 0}
---- !u!114 &601300419738159607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687203531365180638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fca61224698067e4dbe7bd98b001a17d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyRangedShooting
-  bulletPrefab: {fileID: 3239912804696788677, guid: 5bb416952cc6fb940b55cfe2c07f925b, type: 3}
-  shootingPoint: {fileID: 3667313993930384981}
-  bulletSpeed: 5
-  shootingCooldown: 3
 --- !u!114 &1533977930543750932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,9 +261,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRangedShooting
   bulletPrefab: {fileID: 3239912804696788677, guid: 5bb416952cc6fb940b55cfe2c07f925b, type: 3}
-  shootingPoint: {fileID: 3667313993930384981}
-  bulletSpeed: 5
+  shootingPoint: {fileID: 6052376014860889087}
   shootingCooldown: 2
+  currentShootingCooldown: 0
+  bulletSpeed: 10
+  bulletDamage: 1
+  bulletDespawnTime: 5
 --- !u!1 &3667313993930384981
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +276,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6052376014860889087}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ShootingPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

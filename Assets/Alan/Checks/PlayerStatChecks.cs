@@ -1,11 +1,18 @@
+using System;
 using UnityEngine;
 
 public class PlayerStatChecks : MonoBehaviour
 {
-    public static float DamageTaken;
+    [SerializeField] private static float DamageTakenCodeOnly;
+    public float damageTaken;
     
     public static void TakeDamage(float damage) 
     {
-        DamageTaken += damage;
+        DamageTakenCodeOnly += damage;
+    }
+
+    private void FixedUpdate()
+    {
+        damageTaken =  DamageTakenCodeOnly;
     }
 }
