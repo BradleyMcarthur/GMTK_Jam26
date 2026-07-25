@@ -6,23 +6,26 @@ using UnityEngine;
 public class PlayerLocomotion : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 6f;
-    [SerializeField] private float rotationSpeed = 720f; // degrees/second
+    [SerializeField] private float rotationSpeed = 720f; // degrees per second
+    [SerializeField] private float fallbackMoveSpeed = 6f; // used only if PlayerStats isn't in the scene
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 18f;
     [SerializeField] private float dashDuration = 0.15f;
-    [SerializeField] private float dashCooldown = 0.8f;
+    [SerializeField] private float fallbackDashCooldown = 0.8f; // used only if PlayerStats isn't in the scene
 
-    //Raised the instant a dash begins
+    /// <summary>Raised the instant a dash begins.</summary>
     public event Action DashStarted;
 
-    //Raised the instant a dash ends
+    /// <summary>Raised the instant a dash ends.</summary>
     public event Action DashEnded;
 
     public bool IsDashing { get; private set; }
     public Vector2 FacingDirection => _lastMoveDirection;
     public bool IsMoving => _moveDirection.sqrMagnitude > 0.01f;
+    
+    private float MoveSpeed => PlayerStats.Instance != null ? PlayerStats.Instance.MoveSpeed : fallbackMoveSpeed;
+    private float DashCooldownValue => PlayerStats.Instance != null ? PlayerStats.Instance.DashCooldown : fallbackDashCooldown;
 
     private Rigidbody2D _rb;
     private PlayerInputReader _input;
@@ -53,7 +56,7 @@ public class PlayerLocomotion : MonoBehaviour
     private void FixedUpdate()
     {
         ApplyMotion();
-        //RotateTowardsFacing(); Off for now, looks jank as hell lol
+        //RotateTowardsFacing();
     }
 
     private void ReadMovementInput()
@@ -76,7 +79,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         IsDashing = true;
         _dashTimeRemaining = dashDuration;
-        _dashCooldownRemaining = dashCooldown;
+        _dashCooldownRemaining = DashCooldownValue;
         DashStarted?.Invoke();
     }
 
@@ -100,7 +103,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         Vector2 velocity = IsDashing
             ? _lastMoveDirection * dashSpeed
-            : _moveDirection * moveSpeed;
+            : _moveDirection * MoveSpeed;
         
         _rb.linearVelocity = velocity;
     }
@@ -109,7 +112,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (_lastMoveDirection.sqrMagnitude < 0.01f)
             return;
-        
+
+        // -90 offset assumes the sprite's "forward" is drawn facing up.
         float targetAngle = Mathf.Atan2(_lastMoveDirection.y, _lastMoveDirection.x) * Mathf.Rad2Deg - 90f;
         float newAngle = Mathf.MoveTowardsAngle(_rb.rotation, targetAngle, rotationSpeed * Time.fixedDeltaTime);
         _rb.MoveRotation(newAngle);

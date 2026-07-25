@@ -10,9 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 539084756888549246}
   - component: {fileID: 3835604718887886709}
+  - component: {fileID: 2890353069246342153}
   - component: {fileID: 252892679095778692}
   - component: {fileID: 6657489857482239822}
   - component: {fileID: 6692374990054717671}
+  - component: {fileID: 9004748836537657534}
+  - component: {fileID: 6523764361352995983}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -65,6 +68,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!70 &2890353069246342153
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544266683618249248}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 0
 --- !u!114 &252892679095778692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,11 +129,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3393eef970679f449b621e5ee20d0a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLocomotion
-  moveSpeed: 6
   rotationSpeed: 720
+  fallbackMoveSpeed: 6
   dashSpeed: 18
   dashDuration: 0.15
-  dashCooldown: 0.8
+  fallbackDashCooldown: 0.8
 --- !u!114 &6692374990054717671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,11 +149,48 @@ MonoBehaviour:
   range: 8
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   projectilePrefab: {fileID: -3873742169687554846, guid: baee6d1a482cdaa4ba7f9df04b57bf1f, type: 3}
   firePoint: {fileID: 8561532015873871242}
-  fireRate: 2
+  fallbackFireRate: 2
   pauseWhileDashing: 1
+--- !u!114 &9004748836537657534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544266683618249248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a88a1df5932c0ed4f96f64c79185c583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  maxHealth: 100
+  moveSpeed: 6
+  dashCooldown: 0.8
+  fireRate: 2
+  critChance: 0.1
+  critDamageMultiplier: 2
+--- !u!114 &6523764361352995983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544266683618249248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3bd89993004f324d8140b7664588fa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
+  baseThreshold: 15
+  thresholdGrowth: 1.25
+  moveSpeedBuff: 0.5
+  fireRateBuff: 0.2
+  critChanceBuff: 0.02
+  critDamageBuff: 0.1
+  maxHealthBuff: 10
 --- !u!1 &4048363241077545130
 GameObject:
   m_ObjectHideFlags: 0

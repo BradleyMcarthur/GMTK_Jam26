@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
+    private LevelTimerManager _timer;
+    
     [SerializeField] private float spawnRangeX;
     [SerializeField] private float spawnRangeY;
     [SerializeField] private Color gizmoColor = Color.red;
@@ -26,6 +28,12 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
+        if (_timer == null)
+        {
+            TrySubscribe();
+            return;
+        }
+        
         if (!canSpawn) return;
         
         if (amountCurrentlySpawned <= maxAmountSpawnedAtATime)
@@ -42,6 +50,21 @@ public class EnemySpawner : MonoBehaviour
                 StopCoroutine(SpawnEnemies(amountSpawnedAtATime));
             }
         }
+    }
+
+    private void TrySubscribe()
+    {
+        if (LevelTimerManager.Instance == null)
+            return;
+
+        _timer = LevelTimerManager.Instance;
+        _timer.StateChanged += HandleStateChanged;
+        canSpawn = _timer.CurrentDirection == TimerDirection.CountingUp; // sync to current state
+    }
+    
+    private void HandleStateChanged(TimerDirection direction)
+    {
+        canSpawn = direction == TimerDirection.CountingUp;
     }
 
     private IEnumerator SpawnEnemies(int amount)
@@ -80,5 +103,11 @@ public class EnemySpawner : MonoBehaviour
         
         Gizmos.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, 0.2f);
         Gizmos.DrawCube(center, size);
+    }
+    
+    private void OnDestroy()
+    {
+        if (_timer != null)
+            _timer.StateChanged -= HandleStateChanged;
     }
 }

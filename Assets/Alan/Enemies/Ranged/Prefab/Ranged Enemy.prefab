@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3926f2c0c44f4b64d93a39a05c442cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHp
+  resourcePickupPrefab: {fileID: 7077685368996187417, guid: 9420d35106deef24285ee5c0c7794d46, type: 3}
   enemyHealth: 0
   maxHealth: 100
   isDead: 0
