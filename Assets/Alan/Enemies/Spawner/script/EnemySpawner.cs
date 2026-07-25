@@ -24,8 +24,38 @@ public class EnemySpawner : MonoBehaviour
     
     [SerializeField] private float currentCooldownTimer;
 
+    [Space(15)]
+    public bool onCountUp = false;
+    [SerializeField] private float specialSpawningCooldown;
+    [SerializeField] private int specialAmountSpawnedAtATime;
+    [SerializeField] private int specialMaxAmountSpawnedAtATime;
+    [SerializeField] private int specialTimeBetweenEachSpawn;
+    
+    [Space(10)]
+    [SerializeField] private float originalValueOfSpawningCooldown;
+    [SerializeField] private int originalValueOfAmountSpawnedAtATime;
+    [SerializeField] private int originalValueOfMaxAmountSpawnedAtATime;
+    [SerializeField] private int originalValueOfTimeBetweenEachSpawn;
+
+    private void Awake()
+    {
+        originalValueOfSpawningCooldown = spawningCooldown;
+        originalValueOfAmountSpawnedAtATime = amountSpawnedAtATime;
+        originalValueOfMaxAmountSpawnedAtATime = maxAmountSpawnedAtATime;
+        originalValueOfTimeBetweenEachSpawn = timeBetweenEachSpawn;
+    }
+
     private void Update()
     {
+        if (onCountUp)
+        {
+            OnCountUpEvent();
+        }
+        else
+        {
+            BackToCountDown();
+        }
+
         if (!canSpawn) return;
         
         if (amountCurrentlySpawned <= maxAmountSpawnedAtATime)
@@ -67,7 +97,23 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(timeBetweenEachSpawn);
         }
     }
-    
+
+    private void OnCountUpEvent()
+    {
+        spawningCooldown = specialSpawningCooldown;
+        amountSpawnedAtATime =  specialAmountSpawnedAtATime;
+        maxAmountSpawnedAtATime =  specialMaxAmountSpawnedAtATime;
+        timeBetweenEachSpawn  = specialTimeBetweenEachSpawn;
+    }
+
+    private void BackToCountDown()
+    {
+        spawningCooldown = originalValueOfSpawningCooldown;
+        amountSpawnedAtATime = originalValueOfAmountSpawnedAtATime;
+        maxAmountSpawnedAtATime = originalValueOfMaxAmountSpawnedAtATime;
+        timeBetweenEachSpawn = originalValueOfTimeBetweenEachSpawn;
+    }
+
     private void OnDrawGizmos()
     {
         if (!showGizmos) return;

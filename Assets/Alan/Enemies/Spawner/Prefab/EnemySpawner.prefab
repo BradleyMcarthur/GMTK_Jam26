@@ -360,9 +360,18 @@ MonoBehaviour:
   - {fileID: 1687203531365180638, guid: b096de7f02d52e64db51a4a1a65344c7, type: 3}
   - {fileID: 5187048382334384205, guid: 4aed32469824e034a8ec679df2f43e38, type: 3}
   canSpawn: 1
-  spawningCooldown: 5
+  spawningCooldown: 10
   amountSpawnedAtATime: 1
   maxAmountSpawnedAtATime: 10
   amountCurrentlySpawned: 0
   timeBetweenEachSpawn: 2
   currentCooldownTimer: 0
+  onCountUp: 0
+  specialSpawningCooldown: 1
+  specialAmountSpawnedAtATime: 3
+  specialMaxAmountSpawnedAtATime: 20
+  specialTimeBetweenEachSpawn: 1
+  originalValueOfSpawningCooldown: 0
+  originalValueOfAmountSpawnedAtATime: 0
+  originalValueOfMaxAmountSpawnedAtATime: 0
+  originalValueOfTimeBetweenEachSpawn: 0
