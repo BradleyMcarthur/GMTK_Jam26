@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 214148256824833156}
   - component: {fileID: 3136600351210842885}
   - component: {fileID: 422649169810169167}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Melee Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 329025972175404404}
   - component: {fileID: 1145289122204580185}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1721841172973179768}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MeleePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
