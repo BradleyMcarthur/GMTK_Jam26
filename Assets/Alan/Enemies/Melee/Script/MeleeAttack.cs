@@ -19,7 +19,7 @@ public class MeleeAttack : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && !hitPlayer)
         {
             hitPlayer = true;
-            PlayerStatChecks.TakeDamage(EnemyMeleeAttack.meleeDamageReference);
+            PlayerStats.Instance.TakeDamage(EnemyMeleeAttack.meleeDamageReference);
         }
     }
 

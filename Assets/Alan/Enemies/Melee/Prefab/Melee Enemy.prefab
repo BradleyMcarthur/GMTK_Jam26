@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 214148256824833156}
   - component: {fileID: 3136600351210842885}
   - component: {fileID: 422649169810169167}
+  - component: {fileID: -2868369751351104922}
   m_Layer: 7
   m_Name: Melee Enemy
   m_TagString: Untagged
@@ -62,7 +63,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -163,11 +164,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMeleeAttack
   meleePrefab: {fileID: 4913082148500322345, guid: 3c4556455296c7645b830f182eba7129, type: 3}
   meleePoint: {fileID: 1721841172973179768}
-  meleeDamage: 5
+  meleeDamage: 8
   meleeAtkCooldown: 3
   currentMeleeCooldown: 0
   meleeDespawnTime: 0.25
   isAbleToAttack: 0
+--- !u!114 &-2868369751351104922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5187048382334384205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8b6556111d12c94eae1d67096dfa691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFreezeController
 --- !u!1 &7818352127164326102
 GameObject:
   m_ObjectHideFlags: 0

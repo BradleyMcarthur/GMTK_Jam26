@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 5834442051337719181}
   - component: {fileID: 1768476363741352736}
   - component: {fileID: 1533977930543750932}
+  - component: {fileID: -7530932371208824592}
   m_Layer: 6
   m_Name: Ranged Enemy
   m_TagString: Enemy
@@ -153,7 +154,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
@@ -266,8 +267,20 @@ MonoBehaviour:
   shootingCooldown: 2
   currentShootingCooldown: 0
   bulletSpeed: 10
-  bulletDamage: 1
+  bulletDamage: 5
   bulletDespawnTime: 5
+--- !u!114 &-7530932371208824592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687203531365180638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8b6556111d12c94eae1d67096dfa691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFreezeController
 --- !u!1 &3667313993930384981
 GameObject:
   m_ObjectHideFlags: 0
