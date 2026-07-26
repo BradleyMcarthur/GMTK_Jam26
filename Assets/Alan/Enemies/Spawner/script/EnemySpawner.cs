@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
+    private LevelTimerManager _timer;
+    
     [SerializeField] private float spawnRangeX;
     [SerializeField] private float spawnRangeY;
     [SerializeField] private Color gizmoColor = Color.red;
@@ -36,6 +38,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int originalValueOfAmountSpawnedAtATime;
     [SerializeField] private int originalValueOfMaxAmountSpawnedAtATime;
     [SerializeField] private int originalValueOfTimeBetweenEachSpawn;
+    
+    private Coroutine _spawnEnemiesCoroutine;
 
     private void Awake()
     {
@@ -47,6 +51,12 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
+        if (_timer == null)
+        {
+            TrySubscribe();
+            return;
+        }
+
         if (onCountUp)
         {
             OnCountUpEvent();
@@ -57,21 +67,39 @@ public class EnemySpawner : MonoBehaviour
         }
 
         if (!canSpawn) return;
-        
+
         if (amountCurrentlySpawned <= maxAmountSpawnedAtATime)
         {
             currentCooldownTimer += Time.deltaTime;
 
             if (currentCooldownTimer >= spawningCooldown)
             {
-                StartCoroutine(SpawnEnemies(amountSpawnedAtATime));
+                _spawnEnemiesCoroutine = StartCoroutine(SpawnEnemies(amountSpawnedAtATime));
                 currentCooldownTimer = 0f;
             }
             else 
             {
-                StopCoroutine(SpawnEnemies(amountSpawnedAtATime));
+                if (_spawnEnemiesCoroutine != null)
+                {
+                    StopCoroutine(_spawnEnemiesCoroutine);
+                }
             }
         }
+    }
+
+    private void TrySubscribe()
+    {
+        if (LevelTimerManager.Instance == null)
+            return;
+
+        _timer = LevelTimerManager.Instance;
+        _timer.StateChanged += HandleStateChanged;
+        canSpawn = _timer.CurrentDirection == TimerDirection.CountingUp; // sync to current state
+    }
+    
+    private void HandleStateChanged(TimerDirection direction)
+    {
+        canSpawn = direction == TimerDirection.CountingUp;
     }
 
     private IEnumerator SpawnEnemies(int amount)
@@ -126,5 +154,11 @@ public class EnemySpawner : MonoBehaviour
         
         Gizmos.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, 0.2f);
         Gizmos.DrawCube(center, size);
+    }
+    
+    private void OnDestroy()
+    {
+        if (_timer != null)
+            _timer.StateChanged -= HandleStateChanged;
     }
 }

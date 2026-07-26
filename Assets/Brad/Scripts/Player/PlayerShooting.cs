@@ -15,11 +15,13 @@ public class PlayerShooting : MonoBehaviour
     [Header("Firing")]
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireRate = 2f; // shots per second
+    [SerializeField] private float fallbackFireRate = 2f;  // Safety net if no PlayerStats in scene
     [SerializeField] private bool pauseWhileDashing = true;
 
     private PlayerLocomotion _locomotion;
     private float _fireCooldownRemaining;
+    
+    private float FireRate => PlayerStats.Instance != null ? PlayerStats.Instance.FireRate : fallbackFireRate;
 
     private void Awake()
     {
@@ -73,9 +75,13 @@ public class PlayerShooting : MonoBehaviour
     {
         Vector2 direction = (Vector2)target.position - (Vector2)firePoint.position;
         Projectile projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        projectile.Launch(direction);
-
-        _fireCooldownRemaining = 1f / fireRate;
+ 
+        float damageMultiplier = PlayerStats.Instance != null ? PlayerStats.Instance.RollDamageMultiplier(out _) : 1f;
+        float finalDamage = projectile.BaseDamage * damageMultiplier;
+ 
+        projectile.Launch(direction, finalDamage);
+ 
+        _fireCooldownRemaining = 1f / FireRate;
     }
 
     // Draws the detection range in the Scene view

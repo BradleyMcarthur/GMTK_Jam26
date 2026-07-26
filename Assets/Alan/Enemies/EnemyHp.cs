@@ -2,10 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EnemyHp : MonoBehaviour
+public class EnemyHp : MonoBehaviour, IDamageable
 {
-    public int enemyHealth;
-    public int maxHealth = 100;
+    [SerializeField] GameObject resourcePickupPrefab;
+    
+    public float enemyHealth;
+    public float maxHealth = 100;
     public bool isDead = false;
 
     void Start()
@@ -22,7 +24,7 @@ public class EnemyHp : MonoBehaviour
     //     }
     // }
 
-    public void EnemyTakeDamage(int damage)
+    public void EnemyTakeDamage(float damage)
     {
         if (isDead) return;
         
@@ -32,8 +34,19 @@ public class EnemyHp : MonoBehaviour
         {
             isDead = true;
             EnemyManager.Instance.EnemyDied(this);
-            Destroy(gameObject);
+            Die();
         }
+    }
+    
+    public void TakeDamage(float amount)
+    {
+        EnemyTakeDamage(amount);
+    }
+
+    private void Die()
+    {
+        Instantiate(resourcePickupPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     void OnDestroy()
