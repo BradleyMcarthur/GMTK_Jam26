@@ -352,24 +352,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1557197152524484892b4fcb3ebeb50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  spawnRangeX: 5
-  spawnRangeY: 5
+  spawnRangeX: 10
+  spawnRangeY: 10
   gizmoColor: {r: 1, g: 0, b: 0, a: 1}
   showGizmos: 1
   enemiesCollection:
   - {fileID: 1687203531365180638, guid: b096de7f02d52e64db51a4a1a65344c7, type: 3}
   - {fileID: 5187048382334384205, guid: 4aed32469824e034a8ec679df2f43e38, type: 3}
   canSpawn: 1
-  spawningCooldown: 10
+  spawningCooldown: 5
   amountSpawnedAtATime: 1
-  maxAmountSpawnedAtATime: 10
+  maxAmountSpawnedAtATime: 1000
   amountCurrentlySpawned: 0
-  timeBetweenEachSpawn: 2
+  timeBetweenEachSpawn: 3
   currentCooldownTimer: 0
   onCountUp: 0
   specialSpawningCooldown: 1
   specialAmountSpawnedAtATime: 3
-  specialMaxAmountSpawnedAtATime: 20
+  specialMaxAmountSpawnedAtATime: 1000
   specialTimeBetweenEachSpawn: 1
   originalValueOfSpawningCooldown: 0
   originalValueOfAmountSpawnedAtATime: 0

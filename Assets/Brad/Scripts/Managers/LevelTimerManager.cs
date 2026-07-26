@@ -33,6 +33,8 @@ public class LevelTimerManager : MonoBehaviour
 
     public float CurrentTime { get; private set; }
     public TimerDirection CurrentDirection { get; private set; } = TimerDirection.CountingDown;
+    
+    public float MaxTime => startingTime;
 
     private InputAction _toggleAction;
     private float _toggleCooldownRemaining;
