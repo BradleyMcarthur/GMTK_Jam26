@@ -367,10 +367,10 @@ MonoBehaviour:
   timeBetweenEachSpawn: 3
   currentCooldownTimer: 0
   onCountUp: 0
-  specialSpawningCooldown: 1
-  specialAmountSpawnedAtATime: 3
+  specialSpawningCooldown: 2
+  specialAmountSpawnedAtATime: 2
   specialMaxAmountSpawnedAtATime: 1000
-  specialTimeBetweenEachSpawn: 1
+  specialTimeBetweenEachSpawn: 2
   originalValueOfSpawningCooldown: 0
   originalValueOfAmountSpawnedAtATime: 0
   originalValueOfMaxAmountSpawnedAtATime: 0

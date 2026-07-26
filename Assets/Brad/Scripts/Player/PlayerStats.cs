@@ -27,13 +27,12 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public float CritChance => critChance;
     public float CritDamageMultiplier => critDamageMultiplier;
 
-    /// <summary>Fires whenever health changes, passing (current, max).</summary>
+    //Fires whenever health changes
     public event Action<float, float> HealthChanged;
 
     /// <summary>Fires once when health hits zero.</summary>
     public event Action Died;
-
-    /// <summary>Fires whenever a crit roll succeeds.</summary>
+    
     public event Action CritOccurred;
 
     private void Awake()
@@ -51,6 +50,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public void TakeDamage(float amount)
     {
         if (IsDead) return;
+
+        GetComponent<HitFlashController>()?.Flash();
 
         CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
         HealthChanged?.Invoke(CurrentHealth, maxHealth);
@@ -70,10 +71,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
         HealthChanged?.Invoke(CurrentHealth, maxHealth);
     }
 
-    /// <summary>
-    /// Rolls a crit check against CritChance. Returns the damage multiplier
-    /// to apply (1x on a normal hit, CritDamageMultiplier on a crit).
-    /// </summary>
     public float RollDamageMultiplier(out bool isCrit)
     {
         isCrit = UnityEngine.Random.value <= critChance;
@@ -83,20 +80,18 @@ public class PlayerStats : MonoBehaviour, IDamageable
         return isCrit ? critDamageMultiplier : 1f;
     }
     
-    // Flat add versions, for leveling up that buff on top of whatever the current value already is rather than overwriting it.
     public void AddMoveSpeed(float amount) => moveSpeed += amount;
     public void AddFireRate(float amount) => fireRate += amount;
     public void AddCritChance(float amount) => critChance = Mathf.Clamp01(critChance + amount);
     public void AddCritDamageMultiplier(float amount) => critDamageMultiplier += amount;
- 
-    //Increases max health and heals by the same amount, so the buff isn't wasted
+
+
     public void AddMaxHealth(float amount)
     {
         maxHealth += amount;
         CurrentHealth += amount;
         HealthChanged?.Invoke(CurrentHealth, maxHealth);
     }
- 
-    //Reduces dash cooldown by a flat amount, floored so it never hits zero or negative
+    
     public void ReduceDashCooldown(float amount) => dashCooldown = Mathf.Max(0.05f, dashCooldown - amount);
 }

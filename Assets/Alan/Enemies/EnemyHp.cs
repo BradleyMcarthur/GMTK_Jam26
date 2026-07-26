@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 
 public class EnemyHp : MonoBehaviour, IDamageable
 {
-    [SerializeField] GameObject resourcePickupPrefab;
+    [SerializeField] private GameObject resourcePickupPrefab;
     
-    public float enemyHealth;
-    public float maxHealth = 100;
+    public int enemyHealth;
+    public int maxHealth = 100;
     public bool isDead = false;
 
     void Start()
@@ -16,15 +16,7 @@ public class EnemyHp : MonoBehaviour, IDamageable
         EnemyManager.Instance.AddEnemyToManagerList(this);
     }
 
-    // private void Update() for testing purposes
-    // {
-    //     if (Keyboard.current.spaceKey.wasPressedThisFrame)
-    //     {
-    //         EnemyTakeDamage(10);
-    //     }
-    // }
-
-    public void EnemyTakeDamage(float damage)
+    public void EnemyTakeDamage(int damage)
     {
         if (isDead) return;
         
@@ -34,15 +26,17 @@ public class EnemyHp : MonoBehaviour, IDamageable
         {
             isDead = true;
             EnemyManager.Instance.EnemyDied(this);
+            KillCounter.Instance?.RegisterKill();
             Die();
         }
     }
     
     public void TakeDamage(float amount)
     {
-        EnemyTakeDamage(amount);
+        GetComponent<HitFlashController>()?.Flash();
+        EnemyTakeDamage(Mathf.RoundToInt(amount));
     }
-
+    
     private void Die()
     {
         Instantiate(resourcePickupPrefab, transform.position, Quaternion.identity);

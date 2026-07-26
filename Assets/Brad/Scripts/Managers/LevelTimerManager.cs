@@ -2,20 +2,13 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>Which way the level timer is currently running.</summary>
 public enum TimerDirection
 {
     CountingDown,
     CountingUp
 }
-
-/// <summary>
-/// Tracks a single global level timer. Starts counting down from 60, the player can toggle it to count up instead (and back again)
-/// at any time with a key press. Other systems react via events
-/// </summary>
 public class LevelTimerManager : MonoBehaviour
 {
-    /// <summary>Global access point so other scripts don't need a direct reference.</summary>
     public static LevelTimerManager Instance { get; private set; }
 
     [Header("Settings")]
@@ -25,16 +18,20 @@ public class LevelTimerManager : MonoBehaviour
     [SerializeField] private string toggleBinding = "<Keyboard>/space";
     [SerializeField] private float toggleCooldown = 0.5f;
 
-    /// <summary>Fires whenever the timer's direction is swapped, passing the new direction.</summary>
+    //Fires whenever the timer's direction is swapped, passing the new direction
     public event Action<TimerDirection> StateChanged;
 
-    /// <summary>Fires every frame with the updated time value for UI text.</summary>
+    //Fires every frame with the updated time value — hook this up to UI text
     public event Action<float> TimeChanged;
 
     public float CurrentTime { get; private set; }
     public TimerDirection CurrentDirection { get; private set; } = TimerDirection.CountingDown;
-    
+
+    //The timer's starting value, and the cap CurrentTime won't exceed while counting up
     public float MaxTime => startingTime;
+
+    //While true, the timer doesn't tick and the toggle key does nothing — e.g. during an intro sequence
+    public bool IsPaused { get; private set; }
 
     private InputAction _toggleAction;
     private float _toggleCooldownRemaining;
@@ -64,6 +61,9 @@ public class LevelTimerManager : MonoBehaviour
 
     private void Update()
     {
+        if (IsPaused)
+            return;
+
         if (_toggleCooldownRemaining > 0f)
             _toggleCooldownRemaining -= Time.deltaTime;
 
@@ -72,6 +72,10 @@ public class LevelTimerManager : MonoBehaviour
 
         TickTimer();
     }
+    
+    public void Pause() => IsPaused = true;
+    
+    public void Resume() => IsPaused = false;
 
     private void TickTimer()
     {
